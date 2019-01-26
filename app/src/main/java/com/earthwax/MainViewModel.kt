@@ -15,6 +15,18 @@ class MainViewModel(private val waxRepository: WaxRepository) : ViewModel() {
         }
     }
 
+    fun deleteWaxes(waxes: List<Wax>) {
+        GlobalScope.launch(context = Dispatchers.IO) {
+            waxRepository.delete(waxes)
+        }
+    }
+
+    fun deleteAllWaxes() {
+        GlobalScope.launch(context = Dispatchers.IO) {
+            waxRepository.deleteAll()
+        }
+    }
+
     companion object {
 
         private val WAX_TITLES = listOf(

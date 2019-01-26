@@ -1,10 +1,7 @@
 package com.earthwax
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface WaxDao {
@@ -14,5 +11,11 @@ interface WaxDao {
 
     @Query("select * from waxes")
     fun getAll(): LiveData<List<Wax>>
+
+    @Delete
+    suspend fun delete(waxes: List<Wax>)
+
+    @Query("delete from waxes")
+    suspend fun deleteAll()
 
 }

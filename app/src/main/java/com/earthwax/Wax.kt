@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "waxes")
 data class Wax(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: Long = 0L,
     val title: String
 )

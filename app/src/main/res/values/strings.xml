@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Earthwax</string>
+
+    <!-- main fragment menu -->
+    <string name="main_fragment_menu_delete">Delete</string>
+    <string name="main_fragment_menu_delete_all">Delete all</string>
+
+    <!-- main fragment -->
+    <string name="main_fragment_action_mode_title">Count: %1$d</string>
+
 </resources>
