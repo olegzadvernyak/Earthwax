@@ -24,7 +24,7 @@ class MainFragment : Fragment() {
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             when (item?.itemId) {
                 R.id.action_delete -> waxAdapter?.let {
-                    viewModel.deleteWaxes(it.getSelectedItems())
+                    viewModel.deleteWaxes(it.selectedItems)
                 }
                 R.id.action_delete_all -> viewModel.deleteAllWaxes()
             }
@@ -57,8 +57,8 @@ class MainFragment : Fragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        waxAdapter?.let { adapter ->
-            outState.putParcelableArrayList(KEY_SELECTED_ITEMS, ArrayList(adapter.getSelectedItems()))
+        waxAdapter?.selectedItems?.let {
+            outState.putParcelableArrayList(KEY_SELECTED_ITEMS, ArrayList(it))
         }
     }
 
@@ -73,8 +73,8 @@ class MainFragment : Fragment() {
             }
         }
         savedInstanceState?.let { bundle ->
-            bundle.getParcelableArrayList<Wax>(KEY_SELECTED_ITEMS)?.let { selectedWaxes ->
-                waxAdapter?.setSelection(selectedWaxes)
+            bundle.getParcelableArrayList<Wax>(KEY_SELECTED_ITEMS)?.let {
+                waxAdapter?.selectedItems = it
             }
         }
         with(waxesRecyclerView) {

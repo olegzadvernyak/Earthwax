@@ -16,7 +16,7 @@ data class Wax(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other is Wax) return this.id == other.id
-        return true
+        return false
     }
 
     override fun hashCode(): Int {
