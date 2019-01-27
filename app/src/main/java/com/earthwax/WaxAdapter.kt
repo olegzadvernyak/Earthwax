@@ -57,6 +57,7 @@ class WaxAdapter(private val context: Context) : RecyclerView.Adapter<WaxViewHol
 
     fun setWaxes(waxes: List<Wax>) {
         selectedItems = selectedItems.filter { wax -> waxes.contains(wax) }.toMutableSet()
+        selectionCountListener?.invoke(selectedItems.size)
         val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
                 items[oldItemPosition].id == waxes[newItemPosition].id
