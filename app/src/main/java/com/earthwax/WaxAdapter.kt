@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 class WaxAdapter(private val context: Context) : RecyclerView.Adapter<WaxViewHolder>() {
 
     private var items = listOf<Wax>()
-    private val selectedItems = mutableSetOf<Wax>()
+    private var selectedItems = mutableSetOf<Wax>()
 
     private var isInSelection = false
     private var actionModeCallback: ActionMode.Callback? = null
@@ -56,9 +56,7 @@ class WaxAdapter(private val context: Context) : RecyclerView.Adapter<WaxViewHol
     }
 
     fun setWaxes(waxes: List<Wax>) {
-        selectedItems.forEach { selectedWax ->
-            if (!waxes.contains(selectedWax)) toggleItemSelection(selectedWax)
-        }
+        selectedItems = selectedItems.filter { wax -> waxes.contains(wax) }.toMutableSet()
         val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
                 items[oldItemPosition].id == waxes[newItemPosition].id
@@ -77,6 +75,17 @@ class WaxAdapter(private val context: Context) : RecyclerView.Adapter<WaxViewHol
     fun enableActionMode(actionModeCallback: ActionMode.Callback, selectionCountListener: (Int) -> Unit) {
         this.actionModeCallback = actionModeCallback
         this.selectionCountListener = selectionCountListener
+    }
+
+    fun setSelection(waxes: List<Wax>) {
+        if (!waxes.isEmpty()) {
+            actionModeCallback?.let<ActionMode.Callback, Unit> { callback ->
+                (context as AppCompatActivity).startSupportActionMode(callback)
+                isInSelection = true
+                selectedItems.addAll(waxes)
+                selectionCountListener?.invoke(selectedItems.size)
+            }
+        }
     }
 
     fun endSelection() {

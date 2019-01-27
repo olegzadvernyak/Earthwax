@@ -8,6 +8,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.main_fragment.*
 import org.koin.android.ext.android.inject
+import java.util.ArrayList
+
+private const val KEY_SELECTED_ITEMS = "KEY_SELECTED_ITEMS"
 
 class MainFragment : Fragment() {
 
@@ -53,6 +56,12 @@ class MainFragment : Fragment() {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        waxAdapter?.let { adapter ->
+            outState.putParcelableArrayList(KEY_SELECTED_ITEMS, ArrayList(adapter.getSelectedItems()))
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         waxAdapter = WaxAdapter(view.context).apply {
             enableActionMode(actionModeCallback) { count ->
@@ -61,6 +70,11 @@ class MainFragment : Fragment() {
                     actionMode?.finish()
                     waxAdapter?.endSelection()
                 }
+            }
+        }
+        savedInstanceState?.let { bundle ->
+            bundle.getParcelableArrayList<Wax>(KEY_SELECTED_ITEMS)?.let { selectedWaxes ->
+                waxAdapter?.setSelection(selectedWaxes)
             }
         }
         with(waxesRecyclerView) {
